@@ -33,7 +33,7 @@ const defaultSenderPublicKey =
 const defaultSenderId = '18160565574430594874L';
 const defaultSenderSecondPublicKey =
 	'0401c8ac9f29ded9e1e4d5b6b43051cb25b22f27c7b7b35092161e851946f82f';
-const defaultAmount = 1000;
+const defaultAmount = (3 + 2 ** 62).toString();
 const defaultNoAmount = 0;
 const defaultTimestamp = 141738;
 const defaultTransactionId = '13987348420913138422';
@@ -44,7 +44,7 @@ const defaultSecondSignature =
 const defaultAppId = '1234213';
 const defaultDelegateUsername = 'MyDelegateUsername';
 
-describe('#getTransactionBytes', () => {
+describe.only('#getTransactionBytes', () => {
 	describe('transfer transaction, type 0', () => {
 		let defaultTransaction;
 
@@ -63,7 +63,7 @@ describe('#getTransactionBytes', () => {
 			};
 		});
 
-		it('should return Buffer of type 0 (transfer LSK) transaction', () => {
+		it.only('should return Buffer of type 0 (transfer LSK) transaction', () => {
 			const expectedBuffer = Buffer.from(
 				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCQDOvKqNNBU96AMAAAAAAABhilSXUhLq2T34yIFlXGJVRLzo7XzN/m8IpC7s+xrevQUTB75QFLsFFhe694FdUPYhKecJGBkDYeXU3UeWVBsK',
 				'base64',
@@ -124,7 +124,9 @@ describe('#getTransactionBytes', () => {
 				'AKopAgBdA2qFjOifhESRdi64niv71QpKCg2mWOSyYoslsReuCV0DaoWM6J+ERJF2LrieK/vVCkoKDaZY5LJiiyWxF64JAM68qo00FT3oAwAAAAAAAGGKVJdSEurZPfjIgWVcYlVEvOjtfM3+bwikLuz7Gt69BRMHvlAUuwUWF7r3gV1Q9iEp5wkYGQNh5dTdR5ZUGwo=',
 				'base64',
 			);
-			const transactionBytes = getTransactionBytes(multiSignatureTransaction);
+			const transactionBytes = getTransactionBytes(
+				multiSignatureTransaction,
+			);
 
 			return transactionBytes.should.be.eql(expectedBuffer);
 		});
@@ -149,7 +151,10 @@ describe('#getTransactionBytes', () => {
 			];
 
 			return requiredProperties.forEach(parameter => {
-				const defaultTransactionClone = Object.assign({}, defaultTransaction);
+				const defaultTransactionClone = Object.assign(
+					{},
+					defaultTransaction,
+				);
 				delete defaultTransactionClone[parameter];
 				getTransactionBytes
 					.bind(null, defaultTransactionClone)
@@ -166,7 +171,10 @@ describe('#getTransactionBytes', () => {
 			];
 
 			return requiredProperties.forEach(parameter => {
-				const defaultTransactionClone = Object.assign({}, defaultTransaction);
+				const defaultTransactionClone = Object.assign(
+					{},
+					defaultTransaction,
+				);
 				defaultTransactionClone[parameter] = undefined;
 				getTransactionBytes
 					.bind(null, defaultTransactionClone)
@@ -304,7 +312,8 @@ describe('#getTransactionBytes', () => {
 					description: 'The official Lisk guestbook',
 					tags: 'guestbook message sidechain',
 					type: 0,
-					link: 'https://github.com/MaxKK/guestbookDapp/archive/master.zip',
+					link:
+						'https://github.com/MaxKK/guestbookDapp/archive/master.zip',
 					icon:
 						'https://raw.githubusercontent.com/MaxKK/guestbookDapp/master/icon.png',
 				},
@@ -479,7 +488,9 @@ describe('getTransactionBytes functions', () => {
 				`+${defaultSenderPublicKey}+${defaultSenderSecondPublicKey}`,
 				'utf8',
 			);
-			const assetVoteBuffer = getAssetDataForCastVotesTransaction(votesAsset);
+			const assetVoteBuffer = getAssetDataForCastVotesTransaction(
+				votesAsset,
+			);
 
 			return assetVoteBuffer.should.be.eql(expectedBuffer);
 		});
@@ -651,7 +662,10 @@ describe('getTransactionBytes functions', () => {
 			};
 			const dappIdBuffer = Buffer.from(defaultAppId, 'utf8');
 			const transactionIdBuffer = Buffer.from(defaultTransactionId);
-			const expectedBuffer = Buffer.concat([dappIdBuffer, transactionIdBuffer]);
+			const expectedBuffer = Buffer.concat([
+				dappIdBuffer,
+				transactionIdBuffer,
+			]);
 			const dappOutTransferBuffer = getAssetDataForTransferOutOfDappTransaction(
 				dappOutAsset,
 			);
