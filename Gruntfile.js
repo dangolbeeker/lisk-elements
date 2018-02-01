@@ -3,18 +3,27 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		eslint: {
-			options: {
-				configFile: 'eslint_ecma5.json',
-				reset: true
-			},
 			target: ['lib/**', 'test/**', '!test/mocha.opts', 'Gruntfile.js', 'index.js']
+		},
+
+		babel: {
+			options: {
+				sourceMap: true,
+			},
+			dist: {
+				files: [{
+					expand: true,
+					src: ['./index.js', './lib/**/*.js'],
+					dest: './build/',
+				}]
+			}
 		},
 
 		pkg: grunt.file.readJSON('package.json'),
 
 		browserify: {
 			js: {
-				src: './index.js',
+				src: './build/index.js',
 				dest: './dist/lisk-js.js'
 			},
 			options: {
@@ -27,7 +36,7 @@ module.exports = function (grunt) {
 		watch: {
 			scripts: {
 				files: ['lib/*.js'],
-				tasks: ['eslint', 'browserify'],
+				tasks: ['eslint', 'babel', 'browserify'],
 				options: {
 					spawn: false,
 					livereload: true
@@ -67,12 +76,14 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-force');
 	grunt.loadNpmTasks('grunt-coveralls');
+	grunt.loadNpmTasks('grunt-babel');
 	grunt.registerTask('jenkins', ['exec:coverageSingle', 'coveralls']);
 	grunt.registerTask('eslint-ci', ['eslint']);
 	grunt.registerTask('default', [
 		'force:on',
-		'browserify',
 		'eslint',
+		'babel',
+		'browserify',
 		'uglify',
 		'watch'
 	]);
