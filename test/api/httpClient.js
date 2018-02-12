@@ -74,7 +74,9 @@ describe('HttpClient module', () => {
 				key3: 'value3',
 			};
 			const url = createURL('http://localhost:8080', 'transactions', query);
-			return url.should.be.equal('http://localhost:8080/api/transactions?key1=value1&key2=value2&key3=value3');
+			return url.should.be.equal(
+				'http://localhost:8080/api/transactions?key1=value1&key2=value2&key3=value3',
+			);
 		});
 	});
 
@@ -88,7 +90,8 @@ describe('HttpClient module', () => {
 		});
 
 		it('should be called with correct url and header', () => {
-			httpClient.get(defaultFullURL, defaultHeader, defaultEndpoint)
+			httpClient
+				.get(defaultFullURL, defaultHeader, defaultEndpoint)
 				.then(() => {
 					popsicleStub.should.be.calledWithExactly({
 						method: GET,
@@ -103,7 +106,8 @@ describe('HttpClient module', () => {
 				key2: 'value2',
 				key3: 'value3',
 			};
-			httpClient.get(defaultFullURL, defaultHeader, defaultEndpoint, query)
+			httpClient
+				.get(defaultFullURL, defaultHeader, defaultEndpoint, query)
 				.then(() => {
 					popsicleStub.should.be.calledWithExactly({
 						method: GET,
@@ -123,7 +127,8 @@ describe('HttpClient module', () => {
 		});
 
 		it('should be called with correct url and header', () => {
-			httpClient.post(defaultFullURL, defaultHeader, defaultEndpoint, defaultRequest)
+			httpClient
+				.post(defaultFullURL, defaultHeader, defaultEndpoint, defaultRequest)
 				.then(() => {
 					popsicleStub.should.be.calledWithExactly({
 						method: POST,

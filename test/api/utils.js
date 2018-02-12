@@ -42,26 +42,44 @@ describe('api utils module', () => {
 		});
 	});
 
-	describe('#getHeaders', () => {
+	describe('#getDefaultHeaders', () => {
 		it('should return testnet headers', () => {
-			const header = utils.getHeaders(8080, true);
+			const header = utils.getDefaultHeaders(8080, true);
 			header.should.have.property('Content-Type').and.be.type('string');
-			header.should.have.property('nethash').and.be.type('string').and.equal(testnetHash);
-			header.should.have.property('broadhash').and.be.type('string').and.equal(testnetHash);
+			header.should.have
+				.property('nethash')
+				.and.be.type('string')
+				.and.equal(testnetHash);
+			header.should.have
+				.property('broadhash')
+				.and.be.type('string')
+				.and.equal(testnetHash);
 			header.should.have.property('os').and.be.type('string');
 			header.should.have.property('version').and.be.type('string');
 			header.should.have.property('minVersion').and.be.type('string');
-			return header.should.have.property('port').and.be.type('number').and.equal(8080);
+			return header.should.have
+				.property('port')
+				.and.be.type('number')
+				.and.equal(8080);
 		});
 		it('should return mainnet headers', () => {
-			const header = utils.getHeaders(8080, false);
+			const header = utils.getDefaultHeaders(8080, false);
 			header.should.have.property('Content-Type').and.be.type('string');
-			header.should.have.property('nethash').and.be.type('string').and.equal(mainnetHash);
-			header.should.have.property('broadhash').and.be.type('string').and.equal(mainnetHash);
+			header.should.have
+				.property('nethash')
+				.and.be.type('string')
+				.and.equal(mainnetHash);
+			header.should.have
+				.property('broadhash')
+				.and.be.type('string')
+				.and.equal(mainnetHash);
 			header.should.have.property('os').and.be.type('string');
 			header.should.have.property('version').and.be.type('string');
 			header.should.have.property('minVersion').and.be.type('string');
-			return header.should.have.property('port').and.be.type('number').and.equal(8080);
+			return header.should.have
+				.property('port')
+				.and.be.type('number')
+				.and.equal(8080);
 		});
 	});
 });

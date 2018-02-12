@@ -30,7 +30,7 @@ export const getDefaultPort = (testnet, ssl) => {
 	return LIVE_PORT;
 };
 
-export const getHeaders = (port, testnet) => {
+export const getDefaultHeaders = (port, testnet) => {
 	const commonNethash = {
 		'Content-Type': 'application/json',
 		os: 'lisk-js-api',

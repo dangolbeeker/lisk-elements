@@ -15,14 +15,18 @@
 import { LIVE_PORT, TEST_PORT, SSL_PORT } from 'constants';
 import config from '../../config.json';
 import { get, post } from './httpClient';
-import { getDefaultPort, getHeaders } from './utils';
+import { getDefaultPort, getDefaultHeaders } from './utils';
 
 export default class LiskAPI {
 	constructor(providedOptions) {
 		const options = Object.assign({}, config.options, providedOptions);
 		this.ssl = options.ssl !== undefined ? options.ssl : true;
 		this.testnet = options.testnet || false;
-		this.headers = this.getHeaders(options.headers);
+		const nethash =
+			options.headers && options.headers.nethash
+				? options.headers.nethash
+				: null;
+		this.headers = this.getHeaders(nethash);
 
 		this.defaultNodes = [...(options.nodes || config.nodes.mainnet)];
 		this.defaultSSLNodes = [...this.defaultNodes];
@@ -32,10 +36,9 @@ export default class LiskAPI {
 		this.port =
 			options.port === '' || options.port
 				? options.port
-				: getDefaultPort(options);
-		this.randomizeNodes = options.randomizeNodes !== undefined
-			? options.randomizeNodes
-			: true;
+				: getDefaultPort(this.testnet, this.ssl);
+		this.randomizeNodes =
+			options.randomizeNodes !== undefined ? options.randomizeNodes : true;
 		this.providedNode = options.node || null;
 		this.node = options.node || this.selectNewNode();
 	}
@@ -118,17 +121,19 @@ export default class LiskAPI {
 	}
 
 	broadcastSignatures(signatures) {
-		return post(this.fullURL, this.headers, 'signatures', { signatures })
-			.then(result => result.body);
+		return post(this.fullURL, this.headers, 'signatures', { signatures }).then(
+			result => result.body,
+		);
 	}
 
 	broadcastSignedTransaction(transaction) {
-		return post(this.fullURL, this.headers, 'transactions', { transaction })
-			.then(result => result.body);
+		return post(this.fullURL, this.headers, 'transactions', {
+			transaction,
+		}).then(result => result.body);
 	}
 
 	getHeaders(providedNethash) {
-		const headers = getHeaders(this.port, this.testnet);
+		const headers = getDefaultHeaders(this.port, this.testnet);
 		if (providedNethash) {
 			headers.nethash = providedNethash;
 			headers.version = '0.0.0a';
