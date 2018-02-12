@@ -30,43 +30,43 @@ import {
 
 describe('constants', () => {
 	it('FIXED_POINT should be an integer', () => {
-		return FIXED_POINT.should.be.an.integer();
+		return FIXED_POINT.should.be.an.integer;
 	});
 
 	it('DAPP_FEE should be an integer', () => {
-		return DAPP_FEE.should.be.an.integer();
+		return DAPP_FEE.should.be.an.integer;
 	});
 
 	it('DELEGATE_FEE should be an integer', () => {
-		return DELEGATE_FEE.should.be.an.integer();
+		return DELEGATE_FEE.should.be.an.integer;
 	});
 
 	it('IN_TRANSFER_FEE should be an integer', () => {
-		return IN_TRANSFER_FEE.should.be.an.integer();
+		return IN_TRANSFER_FEE.should.be.an.integer;
 	});
 
 	it('OUT_TRANSFER_FEE should be an integer', () => {
-		return OUT_TRANSFER_FEE.should.be.an.integer();
+		return OUT_TRANSFER_FEE.should.be.an.integer;
 	});
 
 	it('MULTISIGNATURE_FEE should be an integer', () => {
-		return MULTISIGNATURE_FEE.should.be.an.integer();
+		return MULTISIGNATURE_FEE.should.be.an.integer;
 	});
 
 	it('SIGNATURE_FEE should be an integer', () => {
-		return SIGNATURE_FEE.should.be.an.integer();
+		return SIGNATURE_FEE.should.be.an.integer;
 	});
 
 	it('TRANSFER_FEE should be an integer', () => {
-		return TRANSFER_FEE.should.be.an.integer();
+		return TRANSFER_FEE.should.be.an.integer;
 	});
 
 	it('VOTE_FEE should be an integer', () => {
-		return VOTE_FEE.should.be.an.integer();
+		return VOTE_FEE.should.be.an.integer;
 	});
 
 	it('DATA_FEE should be an integer', () => {
-		return DATA_FEE.should.be.an.integer();
+		return DATA_FEE.should.be.an.integer;
 	});
 
 	it('EPOCH_TIME should be a Date instance', () => {
@@ -74,10 +74,10 @@ describe('constants', () => {
 	});
 
 	it('EPOCH_TIME_SECONDS should be an integer', () => {
-		return EPOCH_TIME_SECONDS.should.be.an.integer();
+		return EPOCH_TIME_SECONDS.should.be.an.integer;
 	});
 
 	it('EPOCH_TIME_MILLISECONDS should be an integer', () => {
-		return EPOCH_TIME_MILLISECONDS.should.be.an.integer();
+		return EPOCH_TIME_MILLISECONDS.should.be.an.integer;
 	});
 });
