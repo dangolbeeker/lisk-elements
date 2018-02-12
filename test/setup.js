@@ -42,8 +42,6 @@ Object.defineProperty(global, 'should', { value: should });
 global.sinon = sinon;
 global.sandbox = sinon.sandbox.create();
 
-if (!global.naclInstance) {
-	naclFactory.instantiate(nacl => {
-		global.naclInstance = nacl;
-	});
-}
+naclFactory.instantiate(nacl => {
+	global.naclInstance = nacl;
+});
