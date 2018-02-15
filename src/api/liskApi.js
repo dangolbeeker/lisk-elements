@@ -12,10 +12,23 @@
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-import { LIVE_PORT, TEST_PORT, SSL_PORT } from 'constants';
+import {
+	LIVE_PORT,
+	SSL_PORT,
+	TEST_PORT,
+	TESTNET_NETHASH,
+	MAINNET_NETHASH,
+} from 'constants';
 import config from '../../config.json';
 import { get, post } from './httpClient';
-import { getDefaultPort, getDefaultHeaders } from './utils';
+
+const commonHeaders = {
+	'Content-Type': 'application/json',
+	os: 'lisk-js-api',
+	version: '1.0.0',
+	minVersion: '>=0.5.0',
+	Accept: 'application/json',
+};
 
 export default class LiskAPI {
 	constructor(providedOptions) {
@@ -26,17 +39,16 @@ export default class LiskAPI {
 			options.headers && options.headers.nethash
 				? options.headers.nethash
 				: null;
-		this.headers = this.getHeaders(nethash);
+		this.headers = this.getDefaultHeaders(nethash);
 
 		this.defaultNodes = [...(options.nodes || config.nodes.mainnet)];
-		this.defaultSSLNodes = [...this.defaultNodes];
 		this.defaultTestnetNodes = [...(options.nodes || config.nodes.testnet)];
 		this.bannedNodes = [...(options.bannedNodes || [])];
 
 		this.port =
 			options.port === '' || options.port
 				? options.port
-				: getDefaultPort(this.testnet, this.ssl);
+				: this.getDefaultPort();
 		this.randomizeNodes =
 			options.randomizeNodes !== undefined ? options.randomizeNodes : true;
 		this.providedNode = options.node || null;
@@ -47,7 +59,6 @@ export default class LiskAPI {
 		return {
 			current: this.node,
 			default: this.defaultNodes,
-			ssl: this.defaultSSLNodes,
 			testnet: this.defaultTestnetNodes,
 		};
 	}
@@ -56,23 +67,7 @@ export default class LiskAPI {
 		if (this.testnet) {
 			return this.defaultTestnetNodes;
 		}
-		if (this.ssl) {
-			return this.defaultSSLNodes;
-		}
 		return this.defaultNodes;
-	}
-
-	get randomNode() {
-		const nodes = this.nodes.filter(node => !this.isBanned(node));
-
-		if (!nodes.length || nodes.length === 0) {
-			throw new Error(
-				'Cannot get random node: all relevant nodes have been banned.',
-			);
-		}
-
-		const randomIndex = Math.floor(Math.random() * nodes.length);
-		return nodes[randomIndex];
 	}
 
 	get urlPrefix() {
@@ -87,13 +82,39 @@ export default class LiskAPI {
 		return `${this.urlPrefix}://${nodeUrl}`;
 	}
 
-	getHeaders(providedNethash) {
-		const headers = getDefaultHeaders(this.port, this.testnet);
+	getDefaultHeaders(providedNethash) {
+		const headers = Object.assign({}, commonHeaders, {
+			port: this.port,
+			nethash: this.testnet ? TESTNET_NETHASH : MAINNET_NETHASH,
+		});
 		if (providedNethash) {
 			headers.nethash = providedNethash;
 			headers.version = '0.0.0a';
 		}
 		return headers;
+	}
+
+	getDefaultPort() {
+		if (this.testnet) {
+			return TEST_PORT;
+		}
+		if (this.ssl) {
+			return SSL_PORT;
+		}
+		return LIVE_PORT;
+	}
+
+	getRandomNode() {
+		const nodes = this.nodes.filter(node => !this.isBanned(node));
+
+		if (!nodes.length || nodes.length === 0) {
+			throw new Error(
+				'Cannot get random node: all relevant nodes have been banned.',
+			);
+		}
+
+		const randomIndex = Math.floor(Math.random() * nodes.length);
+		return nodes[randomIndex];
 	}
 
 	setSSL(newSSLValue) {
@@ -129,6 +150,15 @@ export default class LiskAPI {
 		return false;
 	}
 
+	banActiveNodeAndSelect() {
+		if (!this.isBanned(this.node)) {
+			this.bannedNodes.push(this.node);
+			this.node = this.selectNewNode();
+			return true;
+		}
+		return false;
+	}
+
 	hasAvailableNodes() {
 		return this.randomizeNodes
 			? this.nodes.some(node => !this.isBanned(node))
@@ -141,7 +171,7 @@ export default class LiskAPI {
 
 	selectNewNode() {
 		if (this.randomizeNodes) {
-			return this.randomNode;
+			return this.getRandomNode();
 		} else if (this.providedNode) {
 			if (this.isBanned(this.providedNode)) {
 				throw new Error(
@@ -176,9 +206,6 @@ export default class LiskAPI {
 	handlePost(endpoint, body) {
 		return post(this.fullURL, this.headers, endpoint, body)
 			.then(result => result.body)
-			.then(result =>
-				this.handleTimestampIsInFutureFailures(result, endpoint, body),
-			)
 			.catch(err => this.handlePostFailures(err, endpoint, body));
 	}
 
@@ -198,22 +225,6 @@ export default class LiskAPI {
 			error,
 			message: 'Could not create an HTTP request to any known nodes.',
 		});
-	}
-
-	handleTimestampIsInFutureFailures(result, endpoint, body) {
-		if (
-			!result.success &&
-			result.message &&
-			result.message.match(/Timestamp is in the future/) &&
-			!(body.timeOffset > 40)
-		) {
-			const newBody = Object.assign({}, body, {
-				timeOffset: (body.timeOffset || 0) + 10,
-			});
-
-			return this.handlePost(endpoint, newBody);
-		}
-		return Promise.resolve(result);
 	}
 }
 
