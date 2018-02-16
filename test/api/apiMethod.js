@@ -15,7 +15,7 @@
 
 import apiMethod from '../../src/api/apiMethod';
 
-describe.only('api method module', () => {
+describe('api method module', () => {
 	const GET = 'GET';
 	const POST = 'POST';
 	const defaultBasePath = 'http://localhost:1234/api';

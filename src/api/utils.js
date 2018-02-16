@@ -24,18 +24,20 @@ export const toQueryString = obj => {
 	return parts.join('&');
 };
 
+const urlParamRegex = /{[^}]+}/i;
 export const solveURLParams = (url, params) => {
+	if (!params || Object.keys(params).length === 0) {
+		if (url.match(urlParamRegex)) {
+			throw Error('URL is not completely solved');
+		}
+		return url;
+	}
 	let solvedURL = url;
 	Object.keys(params).forEach(key => {
 		solvedURL = solvedURL.replace(`{${key}}`, params[key]);
 	});
-	return solvedURL;
-};
-
-export const createURL = (baseURL, endpoint, query) => {
-	let url = `${baseURL}/api/${endpoint}`;
-	if (query) {
-		url += `?${toQueryString(query)}`;
+	if (solvedURL.match(urlParamRegex)) {
+		throw Error('URL is not completely solved');
 	}
-	return url;
+	return encodeURI(solvedURL);
 };
