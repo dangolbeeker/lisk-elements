@@ -108,7 +108,7 @@ describe('Lisk API module', () => {
 		});
 	});
 
-	describe.only('on initialize', () => {
+	describe('on initialize', () => {
 		describe('SSL', () => {
 			it('should set SSL to true on initialization when no SSL options is passed', () => {
 				LSK = new LiskAPI({ ssl: undefined });

@@ -36,12 +36,12 @@ export default class LiskResource {
 
 		if (retry) {
 				request
-				.catch(err => this.handlePostFailures(err, req));
+				.catch(err => this.handleRetry(err, req));
 		}
 		return request;
 	}
 
-	handlePostFailures(error, req) {
+	handleRetry(error, req) {
 		if (this.liskAPI.hasAvailableNodes()) {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {

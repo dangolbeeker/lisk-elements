@@ -17,7 +17,8 @@ import { GET } from '../constants';
 import * as utils from './utils';
 
 // Bind to resource class
-const apiMethod = spec => {
+const apiMethod = params => {
+	const spec = params || {};
 	const method = spec.method || GET;
 	const path = spec.path || '';
 	const urlParams = spec.urlParams || [];
@@ -28,38 +29,46 @@ const apiMethod = spec => {
 	return function apiHandler(...args) {
 		// this refers to resource class
 		const self = this;
-		// solve full URL with url params
 		let fullURL = self.getResourcePath() + path;
-		// get headers
 		const headers = self.getHeaders();
-		if (args.length < urlParams.length) {
-			// Invalid input error
-		}
-		// solve url
+		// if urlParams is set, replace variable within URL
 		if (urlParams.length > 0) {
-			fullURL = utils.solveURLParams(fullURL, urlParams);
+			if (args.length < urlParams.length) {
+				return Promise.reject(Error('Arguments must include Params defined.'));
+			}
+			const urlData = {};
+			urlParams.forEach(param => {
+				urlData[param] = args.shift();
+			});
+			fullURL = utils.solveURLParams(fullURL, urlData);
 		}
 		// last argument is data
-		let data = Object.assign({}, defaultData);
-		if (args.length > urlParams.length > 0) {
-			data = args[args.length - 1];
-		}
 		// # same as length of urlParams is the arguments, and the last one is data(body or query)
+		const data = Object.assign({},
+			defaultData,
+			args.length > 0 && typeof args[0] === 'object' ? args[0] : {},
+		);
+
 		if (validator && data) {
-			validator(data);
+			try {
+				validator(data);
+			} catch (err) {
+				return Promise.reject(err);
+			}
 		}
-		let body = null;
-		if (method === GET) {
-			fullURL += `?${utils.toQueryString(data)}`;
-		} else {
-			body = data;
+		const requestData = {
+			method,
+			url: fullURL,
+			headers,
+		};
+		if (Object.keys(data).length !== 0) {
+			if (method === GET) {
+				requestData.url += `?${utils.toQueryString(data)}`;
+			} else {
+				requestData.body = data;
+			}
 		}
-		return self.request({
-				method,
-				url: fullURL,
-				headers,
-				body,
-			}, retry);
+		return self.request(requestData, retry);
 	};
 };
 

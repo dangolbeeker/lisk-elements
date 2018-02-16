@@ -14,7 +14,7 @@
  */
 
 import LiskResource from '../resource';
-import apiMethod from '../method';
+import apiMethod from '../apiMethod';
 import { POST } from '../../constants';
 
 export default class SignatureResource extends LiskResource {

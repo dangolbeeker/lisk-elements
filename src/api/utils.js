@@ -25,7 +25,11 @@ export const toQueryString = obj => {
 };
 
 export const solveURLParams = (url, params) => {
-	return url + params;
+	let solvedURL = url;
+	Object.keys(params).forEach(key => {
+		solvedURL = solvedURL.replace(`{${key}}`, params[key]);
+	});
+	return solvedURL;
 };
 
 export const createURL = (baseURL, endpoint, query) => {
