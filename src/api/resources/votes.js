@@ -12,26 +12,18 @@
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-export const toQueryString = obj => {
-	const parts = Object.entries(obj).reduce(
-		(accumulator, [key, value]) => [
-			...accumulator,
-			`${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-		],
-		[],
-	);
 
-	return parts.join('&');
-};
+import LiskResource from '../resource';
+import apiMethod from '../method';
+import { GET } from '../../constants';
 
-export const solveURLParams = (url, params) => {
-	return url + params;
-};
+export default class VoteResource extends LiskResource {
+	constructor(liskAPI) {
+		super(liskAPI);
+		this.path = 'votes';
 
-export const createURL = (baseURL, endpoint, query) => {
-	let url = `${baseURL}/api/${endpoint}`;
-	if (query) {
-		url += `?${toQueryString(query)}`;
+		this.get = apiMethod({
+			method: GET,
+		}).bind(this);
 	}
-	return url;
-};
+}

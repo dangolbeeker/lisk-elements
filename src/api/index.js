@@ -16,7 +16,7 @@
 /*
 api({}).accounts.get(query);
 api({}).accounts.getMultiSignitureGroup(address);
-api({}).accounts.getMultiSignitureMembershio(address);
+api({}).accounts.getMultiSignitureMembership(address);
 
 api({}).blocks.get(query);
 

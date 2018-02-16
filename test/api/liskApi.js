@@ -16,8 +16,6 @@ import LiskAPI from 'api/liskApi';
 import config from '../../config.json';
 
 const httpClient = require('api/httpClient');
-const utils = require('api/utils');
-
 
 describe('Lisk API module', () => {
 	const fixedPoint = 10 ** 8;
@@ -31,7 +29,6 @@ describe('Lisk API module', () => {
 	const defaultHeaders = {
 		'Content-Type': 'application/json',
 		nethash: mainnetHash,
-		broadhash: mainnetHash,
 		os: 'lisk-js-api',
 		version: '1.0.0',
 		minVersion: '>=0.5.0',
@@ -82,9 +79,6 @@ describe('Lisk API module', () => {
 		postStub = sandbox
 			.stub(httpClient, 'post')
 			.resolves(Object.assign({}, defaultRequestPromiseResult));
-		getHeadersStub = sandbox
-			.stub(utils, 'getDefaultHeaders')
-			.returns(defaultHeaders);
 		config.nodes.mainnet = defaultNodes;
 		config.nodes.testnet = defaultTestnetNodes;
 		LSK = new LiskAPI({});
@@ -114,7 +108,7 @@ describe('Lisk API module', () => {
 		});
 	});
 
-	describe('on initialize', () => {
+	describe.only('on initialize', () => {
 		describe('SSL', () => {
 			it('should set SSL to true on initialization when no SSL options is passed', () => {
 				LSK = new LiskAPI({ ssl: undefined });
@@ -172,7 +166,7 @@ describe('Lisk API module', () => {
 		describe('nodes', () => {
 			it('should set all nodes lists to provided nodes on initialization when passed as an option', () => {
 				LSK = new LiskAPI({ nodes: defaultNodes });
-				return LSK.should.have.property('nodes').be.eql(defaultNodes);
+				return LSK.should.have.property('currentNodes').be.eql(defaultNodes);
 			});
 
 			it('should set all bannedNodes list to provided bannedNodes on initialization when passed as an option', () => {
@@ -209,7 +203,7 @@ describe('Lisk API module', () => {
 
 			it('should set default mainnet nethash', () => {
 				LSK = new LiskAPI();
-				return LSK.should.have.property('headers').be.equal(defaultHeaders);
+				return LSK.should.have.property('headers').be.eql(defaultHeaders);
 			});
 		});
 	});

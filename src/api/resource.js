@@ -13,6 +13,49 @@
  *
  */
 
-export default class LiskResource {
+import * as popsicle from 'popsicle';
 
+export default class LiskResource {
+	constructor(liskAPI) {
+		this.liskAPI = liskAPI;
+	}
+
+	getHeaders() {
+		return this.liskAPI.headers;
+	}
+
+	getResourcePath() {
+		return `${this.liskAPI.fullURL}/api/${this.path}`;
+	}
+
+	request(req, retry) {
+		const request = popsicle
+			.request(req)
+			.use(popsicle.plugins.parse(['json', 'urlencoded']))
+			.then(res => res.body);
+
+		if (retry) {
+				request
+				.catch(err => this.handlePostFailures(err, req));
+		}
+		return request;
+	}
+
+	handlePostFailures(error, req) {
+		if (this.liskAPI.hasAvailableNodes()) {
+			return new Promise((resolve, reject) => {
+				setTimeout(() => {
+					if (this.liskAPI.randomizeNodes) {
+						this.liskAPI.banActiveNode();
+					}
+					this.request(req, true).then(resolve, reject);
+				}, 1000);
+			});
+		}
+		return Promise.resolve({
+			success: false,
+			error,
+			message: 'Could not create an HTTP request to any known nodes.',
+		});
+	}
 }
