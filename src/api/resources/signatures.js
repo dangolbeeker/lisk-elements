@@ -13,11 +13,11 @@
  *
  */
 
-import LiskResource from '../resource';
+import APIResource from '../resource';
 import apiMethod from '../apiMethod';
 import { POST } from '../../constants';
 
-export default class SignatureResource extends LiskResource {
+export default class SignatureResource extends APIResource {
 	constructor(liskAPI) {
 		super(liskAPI);
 		this.path = 'signatures';

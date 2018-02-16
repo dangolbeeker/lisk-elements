@@ -13,11 +13,11 @@
  *
  */
 
-import LiskResource from '../resource';
+import APIResource from '../resource';
 import apiMethod from '../apiMethod';
 import { GET } from '../../constants';
 
-export default class BlockResource extends LiskResource {
+export default class BlockResource extends APIResource {
 	constructor(liskAPI) {
 		super(liskAPI);
 		this.path = 'blocks';

@@ -13,11 +13,11 @@
  *
  */
 
-import LiskResource from '../resource';
+import APIResource from '../resource';
 import apiMethod from '../apiMethod';
 import { GET, POST } from '../../constants';
 
-export default class TransactionResource extends LiskResource {
+export default class TransactionResource extends APIResource {
 	constructor(liskAPI) {
 		super(liskAPI);
 		this.path = 'transactions';

@@ -13,11 +13,11 @@
  *
  */
 
-import LiskResource from '../resource';
+import APIResource from '../resource';
 import apiMethod from '../apiMethod';
 import { GET } from '../../constants';
 
-export default class VoteResource extends LiskResource {
+export default class VoteResource extends APIResource {
 	constructor(liskAPI) {
 		super(liskAPI);
 		this.path = 'votes';

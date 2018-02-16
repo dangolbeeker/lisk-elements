@@ -15,7 +15,7 @@
 
 import * as popsicle from 'popsicle';
 
-export default class LiskResource {
+export default class APIResource {
 	constructor(liskAPI) {
 		this.liskAPI = liskAPI;
 	}
