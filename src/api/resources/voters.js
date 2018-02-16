@@ -13,9 +13,9 @@
  *
  */
 
-import APIResource from '../resource';
+import { GET } from 'constants';
 import apiMethod from '../apiMethod';
-import { GET } from '../../constants';
+import APIResource from '../apiResource';
 
 export default class VoterResource extends APIResource {
 	constructor(liskAPI) {

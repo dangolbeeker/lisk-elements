@@ -13,9 +13,9 @@
  *
  */
 
-import APIResource from '../resource';
+import { GET, POST } from 'constants';
 import apiMethod from '../apiMethod';
-import { GET, POST } from '../../constants';
+import APIResource from '../apiResource';
 
 export default class TransactionResource extends APIResource {
 	constructor(liskAPI) {

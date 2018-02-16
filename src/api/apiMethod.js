@@ -13,7 +13,7 @@
  *
  */
 
-import { GET } from '../constants';
+import { GET } from 'constants';
 import * as utils from './utils';
 
 // Bind to resource class

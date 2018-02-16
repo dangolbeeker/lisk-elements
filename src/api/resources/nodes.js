@@ -13,9 +13,9 @@
  *
  */
 
-import APIResource from '../resource';
+import { GET, PUT } from 'constants';
 import apiMethod from '../apiMethod';
-import { GET, PUT } from '../../constants';
+import APIResource from '../apiResource';
 
 export default class NodeResource extends APIResource {
 	constructor(liskAPI) {
