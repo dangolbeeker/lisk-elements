@@ -13,7 +13,7 @@
  *
  */
 
-import apiMethod from '../../src/api/apiMethod';
+import apiMethod from 'api/apiMethod';
 
 describe('api method module', () => {
 	const GET = 'GET';

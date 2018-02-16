@@ -14,9 +14,13 @@
  */
 
 import * as popsicle from 'popsicle';
+import LiskAPI from './liskApi';
 
 export default class APIResource {
 	constructor(liskAPI) {
+		if (!liskAPI || liskAPI instanceof LiskAPI) {
+			throw Error('Require LiskAPI instance to be initialized');
+		}
 		this.liskAPI = liskAPI;
 	}
 
