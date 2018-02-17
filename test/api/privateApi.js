@@ -13,7 +13,7 @@
  *
  */
 const popsicle = require('popsicle');
-const privateApi = require('../../src/api/privateApi');
+const privateApi = require('api/privateApi');
 
 describe('privateApi module', () => {
 	const port = 7000;
@@ -346,7 +346,9 @@ describe('privateApi module', () => {
 		});
 
 		it('should create a valid request object for GET request', () => {
-			expectedObject.url += `?limit=${options.limit}&offset=${options.offset}&details=${options.details}`;
+			expectedObject.url += `?limit=${options.limit}&offset=${
+				options.offset
+			}&details=${options.details}`;
 
 			const requestObject = privateApi.createRequestObject.call(
 				LSK,

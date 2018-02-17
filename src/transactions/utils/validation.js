@@ -12,7 +12,7 @@
  * Removal or modification of this copyright notice is prohibited.
  *
  */
-import { bufferToHex, hexToBuffer } from '../../crypto/convert';
+import { bufferToHex, hexToBuffer } from 'cryptography/convert';
 
 export const validatePublicKey = publicKey => {
 	const publicKeyBuffer = hexToBuffer(publicKey);
@@ -21,7 +21,9 @@ export const validatePublicKey = publicKey => {
 	}
 	if (publicKeyBuffer.length !== 32) {
 		throw new Error(
-			`Public key ${publicKey} length differs from the expected 32 bytes for a public key.`,
+			`Public key ${
+				publicKey
+			} length differs from the expected 32 bytes for a public key.`,
 		);
 	}
 

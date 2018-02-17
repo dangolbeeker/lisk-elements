@@ -42,6 +42,7 @@
 		"test": "NODE_ENV=test nyc mocha test",
 		"test:watch": "npm test -- --watch",
 		"test:watch:min": "npm run test:watch -- --reporter=min",
+		"test:node": "npm run build:check && BABEL_ENV=buildcheck mocha test --recursive",
 		"test:browser": "cypress run --env ROOT_DIR=\"${PWD##*/}\"",
 		"cover": "if [ -z $JENKINS_HOME ]; then npm run cover:local; else npm run cover:ci; fi",
 		"cover:base": "NODE_ENV=test nyc report",
@@ -76,6 +77,7 @@
 	"devDependencies": {
 		"babel-cli": "=6.24.1",
 		"babel-plugin-istanbul": "=4.1.4",
+		"babel-plugin-module-resolver": "=3.0.0",
 		"babel-plugin-rewire": "=1.1.0",
 		"babel-plugin-transform-runtime": "=6.23.0",
 		"babel-preset-env": "=1.6.0",
