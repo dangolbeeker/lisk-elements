@@ -155,13 +155,12 @@ export default class LiskAPI {
 	banActiveNode() {
 		if (!this.isBanned(this.node)) {
 			this.bannedNodes.push(this.node);
-			this.node = this.selectNewNode();
 			return true;
 		}
 		return false;
 	}
 
-	banActiveNodeAndSelect() {
+	banAndSelectActiveNode() {
 		if (!this.isBanned(this.node)) {
 			this.bannedNodes.push(this.node);
 			this.node = this.selectNewNode();

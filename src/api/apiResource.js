@@ -14,14 +14,14 @@
  */
 
 import * as popsicle from 'popsicle';
-import LiskAPI from './liskApi';
 
 export default class APIResource {
 	constructor(liskAPI) {
-		if (!liskAPI || liskAPI instanceof LiskAPI) {
+		if (!liskAPI) {
 			throw Error('Require LiskAPI instance to be initialized');
 		}
 		this.liskAPI = liskAPI;
+		this.path = '';
 	}
 
 	getHeaders() {
@@ -29,7 +29,7 @@ export default class APIResource {
 	}
 
 	getResourcePath() {
-		return `${this.liskAPI.fullURL}/api/${this.path}`;
+		return `${this.liskAPI.fullURL}/api${this.path}`;
 	}
 
 	request(req, retry) {
@@ -50,7 +50,7 @@ export default class APIResource {
 			return new Promise((resolve, reject) => {
 				setTimeout(() => {
 					if (this.liskAPI.randomizeNodes) {
-						this.liskAPI.banActiveNode();
+						this.liskAPI.banAndSelectActiveNode();
 					}
 					this.request(req, true).then(resolve, reject);
 				}, 1000);

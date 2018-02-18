@@ -45,7 +45,5 @@ api({}).voters.get(query);
 
 */
 
-import * as liskAPI from './liskApi';
-
-export default liskAPI;
+export { default } from './liskApi';
 

@@ -15,8 +15,6 @@
 import LiskAPI from 'api/liskApi';
 import config from '../../config.json';
 
-const httpClient = require('api/httpClient');
-
 describe('Lisk API module', () => {
 	const fixedPoint = 10 ** 8;
 	const testPort = '7000';
@@ -73,12 +71,6 @@ describe('Lisk API module', () => {
 	let LSK;
 
 	beforeEach(() => {
-		getStub = sandbox
-			.stub(httpClient, 'get')
-			.resolves(Object.assign({}, defaultRequestPromiseResult));
-		postStub = sandbox
-			.stub(httpClient, 'post')
-			.resolves(Object.assign({}, defaultRequestPromiseResult));
 		config.nodes.mainnet = defaultNodes;
 		config.nodes.testnet = defaultTestnetNodes;
 		LSK = new LiskAPI({});
