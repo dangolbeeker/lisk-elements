@@ -3,9 +3,10 @@
 	"plugins": [
 		"transform-runtime",
 		["module-resolver", {
+			"alias": {
 				"root": ["./src"]
 			}
-		]
+		}]
 	],
 	"env": {
 		"test": {
