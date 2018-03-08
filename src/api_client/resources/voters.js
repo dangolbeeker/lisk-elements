@@ -14,14 +14,13 @@
  */
 
 import { GET } from 'constants';
-import APIResource from '../apiResource';
 import apiMethod from '../apiMethod';
+import APIResource from '../apiResource';
 
-export default class AccountsResource extends APIResource {
-	constructor(liskAPI) {
-		super(liskAPI);
-
-		this.path = '/accounts';
+export default class VotersResource extends APIResource {
+	constructor(apiClient) {
+		super(apiClient);
+		this.path = '/voters';
 
 		this.get = apiMethod({
 			method: GET,

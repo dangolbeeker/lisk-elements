@@ -18,8 +18,8 @@ import apiMethod from '../apiMethod';
 import APIResource from '../apiResource';
 
 export default class VotesResource extends APIResource {
-	constructor(liskAPI) {
-		super(liskAPI);
+	constructor(apiClient) {
+		super(apiClient);
 		this.path = '/votes';
 
 		this.get = apiMethod({

@@ -13,31 +13,31 @@
  *
  */
 
-import APIResource from 'api/apiResource';
-import TransactionResource from 'api/resources/transactions';
+import APIResource from 'api_client/apiResource';
+import TransactionResource from 'api_client/resources/transactions';
 
 describe('TransactionsResource', () => {
 	const defaultBasePath = 'http://localhost:1234';
 	const path = '/transactions';
 
-	let LiskAPI;
+	let apiClient;
 	let resource;
 
 	beforeEach(() => {
-		LiskAPI = {
+		apiClient = {
 			headers: {},
-			nodeFullURL: defaultBasePath,
+			currentNode: defaultBasePath,
 			hasAvailableNodes: () => {},
 			randomizeNodes: () => {},
 			banActiveNodeAndSelect: () => {},
 		};
-		resource = new TransactionResource(LiskAPI);
+		resource = new TransactionResource(apiClient);
 	});
 
 	describe('#constructor', () => {
-		it('should throw error without LiskAPI input', () => {
+		it('should throw error without apiClient input', () => {
 			return (() => new TransactionResource()).should.throw(
-				'Require LiskAPI instance to be initialized.',
+				'Require APIClient instance to be initialized.',
 			);
 		});
 

@@ -13,6 +13,7 @@
  *
  */
 
-import liskAPI from './liskApi';
+import APIClient from './api_client';
 
-export default liskAPI;
+export default APIClient;
+export { getMainnetClient, getTestnetClient } from './api_client';

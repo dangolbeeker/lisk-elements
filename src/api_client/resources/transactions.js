@@ -13,17 +13,26 @@
  *
  */
 
-import { GET } from 'constants';
+import { GET, POST } from 'constants';
 import apiMethod from '../apiMethod';
 import APIResource from '../apiResource';
 
-export default class VotersResource extends APIResource {
-	constructor(liskAPI) {
-		super(liskAPI);
-		this.path = '/voters';
+export default class TransactionsResource extends APIResource {
+	constructor(apiClient) {
+		super(apiClient);
+		this.path = '/transactions';
 
 		this.get = apiMethod({
 			method: GET,
+		}).bind(this);
+
+		this.create = apiMethod({
+			method: POST,
+		}).bind(this);
+
+		this.getUnsignedMultisignature = apiMethod({
+			method: GET,
+			path: '/unsigned',
 		}).bind(this);
 	}
 }

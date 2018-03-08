@@ -17,10 +17,10 @@ import { GET } from 'constants';
 import apiMethod from '../apiMethod';
 import APIResource from '../apiResource';
 
-export default class DappsResource extends APIResource {
-	constructor(liskAPI) {
-		super(liskAPI);
-		this.path = '/dapps';
+export default class BlocksResource extends APIResource {
+	constructor(apiClient) {
+		super(apiClient);
+		this.path = '/blocks';
 
 		this.get = apiMethod({
 			method: GET,

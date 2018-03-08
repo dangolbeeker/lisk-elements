@@ -13,31 +13,31 @@
  *
  */
 
-import APIResource from 'api/apiResource';
-import VoteResource from 'api/resources/votes';
+import APIResource from 'api_client/apiResource';
+import VoterResource from 'api_client/resources/voters';
 
-describe('VotesResource', () => {
+describe('VotersResource', () => {
 	const defaultBasePath = 'http://localhost:1234';
-	const path = '/votes';
+	const path = '/voters';
 
-	let LiskAPI;
+	let apiClient;
 	let resource;
 
 	beforeEach(() => {
-		LiskAPI = {
+		apiClient = {
 			headers: {},
-			nodeFullURL: defaultBasePath,
+			currentNode: defaultBasePath,
 			hasAvailableNodes: () => {},
 			randomizeNodes: () => {},
 			banActiveNodeAndSelect: () => {},
 		};
-		resource = new VoteResource(LiskAPI);
+		resource = new VoterResource(apiClient);
 	});
 
 	describe('#constructor', () => {
-		it('should throw error without LiskAPI input', () => {
-			return (() => new VoteResource()).should.throw(
-				'Require LiskAPI instance to be initialized.',
+		it('should throw error without apiClient input', () => {
+			return (() => new VoterResource()).should.throw(
+				'Require APIClient instance to be initialized.',
 			);
 		});
 

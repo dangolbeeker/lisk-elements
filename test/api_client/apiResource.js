@@ -13,7 +13,7 @@
  *
  */
 
-import APIResource from 'api/apiResource';
+import APIResource from 'api_client/apiResource';
 
 const popsicle = require('popsicle');
 

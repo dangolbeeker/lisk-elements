@@ -13,31 +13,31 @@
  *
  */
 
-import APIResource from 'api/apiResource';
-import BlockResource from 'api/resources/blocks';
+import APIResource from 'api_client/apiResource';
+import DappResource from 'api_client/resources/dapps';
 
-describe('BlocksResource', () => {
+describe('DappsResource', () => {
 	const defaultBasePath = 'http://localhost:1234';
-	const path = '/blocks';
+	const path = '/dapps';
 
-	let LiskAPI;
+	let apiClient;
 	let resource;
 
 	beforeEach(() => {
-		LiskAPI = {
+		apiClient = {
 			headers: {},
-			nodeFullURL: defaultBasePath,
+			currentNode: defaultBasePath,
 			hasAvailableNodes: () => {},
 			randomizeNodes: () => {},
 			banActiveNodeAndSelect: () => {},
 		};
-		resource = new BlockResource(LiskAPI);
+		resource = new DappResource(apiClient);
 	});
 
 	describe('#constructor', () => {
-		it('should throw error without LiskAPI input', () => {
-			return (() => new BlockResource()).should.throw(
-				'Require LiskAPI instance to be initialized.',
+		it('should throw error without apiClient input', () => {
+			return (() => new DappResource()).should.throw(
+				'Require APIClient instance to be initialized.',
 			);
 		});
 

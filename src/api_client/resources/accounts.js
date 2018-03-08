@@ -14,24 +14,17 @@
  */
 
 import { GET } from 'constants';
-import apiMethod from '../apiMethod';
 import APIResource from '../apiResource';
+import apiMethod from '../apiMethod';
 
-export default class DelegatesResource extends APIResource {
-	constructor(liskAPI) {
-		super(liskAPI);
-		this.path = '/delegates';
+export default class AccountsResource extends APIResource {
+	constructor(apiClient) {
+		super(apiClient);
+
+		this.path = '/accounts';
 
 		this.get = apiMethod({
 			method: GET,
-		}).bind(this);
-
-		this.getStandby = apiMethod({
-			method: GET,
-			defaultData: {
-				orderBy: 'rate:asc',
-				offset: 101,
-			},
 		}).bind(this);
 	}
 }

@@ -13,31 +13,31 @@
  *
  */
 
-import APIResource from 'api/apiResource';
-import SignatureResource from 'api/resources/signatures';
+import APIResource from 'api_client/apiResource';
+import SignatureResource from 'api_client/resources/signatures';
 
 describe('SignaturesResource', () => {
 	const defaultBasePath = 'http://localhost:1234';
 	const path = '/signatures';
 
-	let LiskAPI;
+	let apiClient;
 	let resource;
 
 	beforeEach(() => {
-		LiskAPI = {
+		apiClient = {
 			headers: {},
-			nodeFullURL: defaultBasePath,
+			currentNode: defaultBasePath,
 			hasAvailableSignatures: () => {},
 			randomizeSignatures: () => {},
 			banActiveSignatureAndSelect: () => {},
 		};
-		resource = new SignatureResource(LiskAPI);
+		resource = new SignatureResource(apiClient);
 	});
 
 	describe('#constructor', () => {
-		it('should throw error without LiskAPI input', () => {
+		it('should throw error without apiClient input', () => {
 			return (() => new SignatureResource()).should.throw(
-				'Require LiskAPI instance to be initialized.',
+				'Require APIClient instance to be initialized.',
 			);
 		});
 

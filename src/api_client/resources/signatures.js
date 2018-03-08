@@ -13,17 +13,17 @@
  *
  */
 
-import { GET } from 'constants';
+import { POST } from 'constants';
 import apiMethod from '../apiMethod';
 import APIResource from '../apiResource';
 
-export default class BlocksResource extends APIResource {
-	constructor(liskAPI) {
-		super(liskAPI);
-		this.path = '/blocks';
+export default class SignaturesResource extends APIResource {
+	constructor(apiClient) {
+		super(apiClient);
+		this.path = '/signatures';
 
-		this.get = apiMethod({
-			method: GET,
+		this.create = apiMethod({
+			method: POST,
 		}).bind(this);
 	}
 }

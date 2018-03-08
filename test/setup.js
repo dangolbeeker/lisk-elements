@@ -56,6 +56,9 @@ global.sandbox = sinon.sandbox.create({
 	useFakeTimers: true,
 });
 
-naclFactory.instantiate(nacl => {
-	global.naclInstance = nacl;
-});
+if (!global.naclInstance) {
+	naclFactory.instantiate(nacl => {
+		global.naclInstance = nacl;
+	});
+}
+
