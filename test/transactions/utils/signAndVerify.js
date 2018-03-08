@@ -21,7 +21,7 @@ import {
 // The list of valid transactions was created with lisk-js 0.5.1
 // using the below mentioned passphrases.
 import validTransactions from '../../../fixtures/transactions.json';
-
+// Require is used for stubbing
 const getTransactionHash = require('transactions/utils/getTransactionHash');
 
 describe('signAndVerify transaction utils', () => {
@@ -65,6 +65,7 @@ describe('signAndVerify transaction utils', () => {
 		getTransactionHashStub = sandbox
 			.stub(getTransactionHash, 'default')
 			.returns(defaultHash);
+		return Promise.resolve();
 	});
 
 	describe('#signTransaction', () => {
@@ -74,6 +75,7 @@ describe('signAndVerify transaction utils', () => {
 		beforeEach(() => {
 			transaction = Object.assign({}, defaultTransaction);
 			signature = signTransaction(transaction, defaultPassphrase);
+			return Promise.resolve();
 		});
 
 		it('should get the transaction hash', () => {
@@ -88,7 +90,7 @@ describe('signAndVerify transaction utils', () => {
 		});
 
 		it('should return the signature', () => {
-			signature.should.be.equal(defaultSignature);
+			return signature.should.be.equal(defaultSignature);
 		});
 	});
 
@@ -121,6 +123,7 @@ describe('signAndVerify transaction utils', () => {
 				multiSignatureTransaction,
 				defaultPassphrase,
 			);
+			return Promise.resolve();
 		});
 
 		it('should remove the signature and second signature before getting transaction hash', () => {
@@ -150,6 +153,7 @@ describe('signAndVerify transaction utils', () => {
 				transaction = Object.assign({}, defaultTransaction, {
 					signature: defaultSignature,
 				});
+				return Promise.resolve();
 			});
 
 			it('should remove the signature before getting transaction hash', () => {
@@ -186,7 +190,7 @@ describe('signAndVerify transaction utils', () => {
 					signature: defaultSignature,
 					signSignature: defaultSecondSignature,
 				});
-				getTransactionHashStub
+				return getTransactionHashStub
 					.onFirstCall()
 					.returns(
 						Buffer.from(
@@ -251,57 +255,58 @@ describe('signAndVerify transaction utils', () => {
 			});
 		});
 	});
-});
 
-describe('integration sign and verify', () => {
-	describe('given a set of transactions', () => {
-		describe('#signTransaction', () => {
-			describe('given a passphrase and a second passphrase', () => {
-				const passphrase =
-					'wagon stock borrow episode laundry kitten salute link globe zero feed marble';
-				const secondPassphrase =
-					'trouble float modify long valve group ozone possible remove dirt bicycle riot';
+	describe('integration sign and verify', () => {
+		describe('given a set of transactions', () => {
+			describe('#signTransaction', () => {
+				describe('given a passphrase and a second passphrase', () => {
+					const passphrase =
+						'wagon stock borrow episode laundry kitten salute link globe zero feed marble';
+					const secondPassphrase =
+						'trouble float modify long valve group ozone possible remove dirt bicycle riot';
 
-				describe('when tested on the first signature', () => {
-					it('should create the correct signature', () => {
-						return validTransactions.forEach(transaction => {
-							const { signature } = transaction;
-							const rawTx = Object.assign({}, transaction);
-							delete rawTx.signature;
-							delete rawTx.signSignature;
-							return signTransaction(rawTx, passphrase).should.be.equal(
-								signature,
-							);
+					describe('when tested on the first signature', () => {
+						it('should create the correct signature', () => {
+							return validTransactions.forEach(transaction => {
+								const { signature } = transaction;
+								const rawTx = Object.assign({}, transaction);
+								delete rawTx.signature;
+								delete rawTx.signSignature;
+								return signTransaction(rawTx, passphrase).should.be.equal(
+									signature,
+								);
+							});
 						});
 					});
-				});
 
-				describe('when tested on the second signature', () => {
-					it('should create the correct signature', () => {
-						return validTransactions.forEach(transaction => {
-							const { signSignature } = transaction;
-							if (signSignature) {
-								const rawTx = Object.assign({}, transaction);
-								delete rawTx.signSignature;
-								return signTransaction(rawTx, secondPassphrase).should.be.equal(
-									signSignature,
-								);
-							}
-							return true;
+					describe('when tested on the second signature', () => {
+						it('should create the correct signature', () => {
+							return validTransactions.forEach(transaction => {
+								const { signSignature } = transaction;
+								if (signSignature) {
+									const rawTx = Object.assign({}, transaction);
+									delete rawTx.signSignature;
+									return signTransaction(
+										rawTx,
+										secondPassphrase,
+									).should.be.equal(signSignature);
+								}
+								return true;
+							});
 						});
 					});
 				});
 			});
-		});
 
-		describe('#verifyTransaction', () => {
-			describe('when executed', () => {
-				const secondPublicKey =
-					'f9666bfed9ef2ff52a04408f22f2bfffaa81384c9433463697330224f10032a4';
-				it('should verify all the transactions', () => {
-					return validTransactions.forEach(transaction => {
-						return verifyTransaction(transaction, secondPublicKey).should.be
-							.true;
+			describe('#verifyTransaction', () => {
+				describe('when executed', () => {
+					const secondPublicKey =
+						'f9666bfed9ef2ff52a04408f22f2bfffaa81384c9433463697330224f10032a4';
+					it('should verify all the transactions', () => {
+						return validTransactions.forEach(transaction => {
+							return verifyTransaction(transaction, secondPublicKey).should.be
+								.true;
+						});
 					});
 				});
 			});
