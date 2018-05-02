@@ -32,7 +32,7 @@ import {
 	validatePublicKey,
 	validatePublicKeys,
 	wrapTransactionCreator,
-} from 'transactions/utils';
+} from 'lisk-transactions/utils';
 
 describe('transaction utils', () => {
 	describe('exports', () => {
