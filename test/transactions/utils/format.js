@@ -15,7 +15,7 @@
 import {
 	prependPlusToPublicKeys,
 	prependMinusToPublicKeys,
-} from 'lisk-transactions/utils/format';
+} from 'lisk-transactions/src/utils/format';
 
 describe('format', () => {
 	describe('#prependPlusToPublicKeys', () => {
